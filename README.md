@@ -3,11 +3,11 @@
 # Getting Started
 These simple steps will help you integrate LSC into your transcriptomics analysis pipeline.
 
-** Read the LSC_requirements for running LSC.**
-** Download and set-up the LSC package.
-** Follow the tutorial to see how LSC works on some example data.
-** Read the manual if anything is unclear.
-** You're ready, Happy LSCing!
+* Read the LSC_requirements for running LSC.
+* Download and set-up the LSC package.
+* Follow the tutorial to see how LSC works on some example data.
+* Read the manual if anything is unclear.
+* You're ready, Happy LSCing!
 
 # Latest publication
 Kin Fai Au, Jason Underwood, Lawrence Lee and Wing Hung Wong 
