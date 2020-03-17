@@ -14,38 +14,54 @@ Kin Fai Au, Jason Underwood, Lawrence Lee and Wing Hung Wong
 Improving PacBio Long Read Accuracy by Short Read Alignment [Manuscript] 
 PLoS ONE 2012. 7(10): e46679. doi:10.1371/journal.pone.0046679
 
-Latest News
- 04-11-2016: Major update version 2.0
-Updates:
-Added Command line argument support.
-Multi-stage execution modes.
-Support for parallelization. Now execution proceeds in batches of long reads the size of which can be set by --long_read_batch_size N.
-Better compressed intermediate files.
-Added utilities folder.
-Added support for multiple short read files.
-Removed use of configuration file.
-Removed support for BWA, RazerS3, and Novoalign. We are happy to support these if there is interest so please contact us if you prefer them over bowtie2. Bowtie2 is the prefered supported aligner in this release.
-Removed the requirement for long reads to be in PacBio format.
- 02-02-2015: Minor updates and bug fixes LSC 1.beta
-Feature Updates:
-Updating aligners default command options to gain better performance.
-Updated Novoalign command options (tested with >= novocraftV3.02.04 version)
-Updated RazerS3 command options to be compatible with latest version (razers3 3.1.1)
-Added extra clean_up option value to remove all generated intermiediate files in case of issues w/ disk space
-Bug Fixes:
-Fix a bug in generating full_LR.fa sequences causing some full read sequences to miss couple of bases
+# Latest News
+04-11-2016: Major update version 2.0
+
+*Updates:*
+* Added Command line argument support.
+* Multi-stage execution modes.
+* Support for parallelization. Now execution proceeds in batches of long reads the size of which can be set by --long_read_batch_size N.
+* Better compressed intermediate files.
+* Added utilities folder.
+* Added support for multiple short read files.
+* Removed use of configuration file.
+* Removed support for BWA, RazerS3, and Novoalign. We are happy to support these if there is interest so please contact us if you prefer them over bowtie2. Bowtie2 is the prefered supported aligner in this release.
+* Removed the requirement for long reads to be in PacBio format.
+
+02-02-2015: Minor updates and bug fixes LSC 1.beta
+
+*Feature Updates:*
+
+* Updating aligners default command options to gain better performance.
+	* Updated Novoalign command options (tested with >= novocraftV3.02.04 version)
+	* Updated RazerS3 command options to be compatible with latest version (razers3 3.1.1)
+* Added extra clean_up option value to remove all generated intermiediate files in case of issues w/ disk space
+
+*Bug Fixes:*
+
+* Fix a bug in generating full_LR.fa sequences causing some full read sequences to miss couple of bases
+ 
  12-01-2013: Faster and much less memory-required LSC 1.alpha is released
+ 
 In the LSC 0.3.0 or 0.3.1, we optimized the setting of bowtie2 and BWA to get much more short read alignment, which improve the the accuracy of error correction a lot/ However, the increase of alignments also requires much more running time (on both alignment and the following error correction step) and memory usage. Therefore, a few users met difficulty of running LSC 0.3.0 or 0.3.1.
+
 In LSC 1.alpha, we apply probabilistic algorithm ("SCD" option) to select ""enough" short read alignment for error correction. LSC 1.alpha does NOT sacrifice the error correction performace (sensitivity and specificity). Please see http://www.augroup.org/LSC/LSC_manual.html#aligner Thus, we save running time and memory usage significantly. The running time is 30-50% of LSC 0.3.1. The peak memory usage decreases to ~10G regardless of the data size.
-New features:
-Added probabilistic algorithm ("SCD" option) to pre-select SR alignments results based on LR-SR alignment coverage depth (Significant improvement in running time and memory usage)
-Removed requirement for loading SR dataset in memory to generate LR-SR mapping file (Significant improvement in memory usage)
-Added option "sort_max_mem" in run.cfg to control maximum memory used by unix sort command to avoid unexpected Mem crash
-Miscellaneous changes:
-Fixed a bug in generating FASTQ file (it affected some of QualityValue computation results)
+
+*New features:*
+
+* Added probabilistic algorithm ("SCD" option) to pre-select SR alignments results based on LR-SR alignment coverage depth (Significant improvement in running time and memory usage)
+* Removed requirement for loading SR dataset in memory to generate LR-SR mapping file (Significant improvement in memory usage)
+* Added option "sort_max_mem" in run.cfg to control maximum memory used by unix sort command to avoid unexpected Mem crash
+
+*Miscellaneous changes:*
+* Fixed a bug in generating FASTQ file (it affected some of QualityValue computation results)
+
 If you want to see the manual and tutorial of the old LSC (before 1.alpha), we keep the links of its the Old manual and Old tutorial in the right side bar.
- 09-30-2013: More robust and faster LSC 0.3.1
+
+09-30-2013: More robust and faster LSC 0.3.1
+
 In LSC 0.3.1, we don't have pseudo chromosome, the alignment time reduced to ~10% (in Bowtie2 mode). And you can re-run some crashed jobs easily now.
+
 New features:
 Remove pseudo-chr processing
 Accept compressed SR as input (should be named SR.fa.cps/SR.fa.cps.idx in any folder)
