@@ -629,11 +629,11 @@ There are four output files: corrected_LR.fa, corrected_LR.fq, full_LR.fa, uncor
 
 As long as there are short reads (SR) mapped to a long read, this long read can be corrected at the SR-covered regions. (Please see more details from the paper). The sequence from the left-most SR-covered base to the right-most SR-covered base is outputted in the file corrected_LR. The output readname format is
   
-  <original readname>|<percentage of corrected output sequence covered by short reads>
+  ```<original readname>|<percentage of corrected output sequence covered by short reads>```
 
 example:
   
-  m111006_202713_42141_c100202382555500000315044810141104_s1_p0/16|0.81
+  ```m111006_202713_42141_c100202382555500000315044810141104_s1_p0/16|0.81```
 
 * full_LR
 
