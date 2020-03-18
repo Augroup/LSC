@@ -709,8 +709,40 @@ You can change these settings through .cfg file. Please refer to their manuals f
 * Note: novoalign has limitation on read length. If you are using LSC with novoalign, please make sure your short reads length do not exceed maximum threashold. Following figures compare LSC correction results configured with different supported aligners. Identity metric is defined as number-of-matchs/error-corrected-read-length after aligning reads to reference genome using Blat.
 
 
-![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_bases.png) ![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_reads.png)
+![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_bases.png) 
+![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_reads.png)
 
+Data-set:
+
+* LongReads: human brain cerebellum polyA RNA processed to enrich for full-length cDNA for the PacBio RS platform under C2 chemistry conditions as CLR data link
+* ShortReads: human brain data from Illumina’s Human Body Map 2.0 project (GSE30611)
+
+Based on your system configuration, you can select the aligner which fits better with your CPU or Memory resources. 
+
+The below table is derived experimentally by running LSC using different aligners on above-mentioned data-set. 
+
+ |        |CPU 	 | Memory |
+ |--------|:----:|:-------|
+ |BWA 	  |Less  | Less   |
+ |Bowtie2 |More  | Less   |
+ |RazerS3 |More  | More   |
+ 
+ 
+ ### Short-read coverage depth (SCD)
+ 
+LSC uses consensus of short-read mapping results to correct long read sequences. In case of having high SR coverage, pile of SRs mapped to a LR segment would significantly increase running time and memory usage in correction step, while having repetitive (redundant) information. By setting SCD parameter in run.cfg file, LSC uses a probabilistic algorithm to randomly select bounded number of SR alignemt results for each LR region in order to maintain expected SR coverage depth of SCD value. This would eliminate high memory peaks in corection step due to pile of SRs mapped in high coverage or repetitive regions. Based on our experiment on multilpe datasets, setting SCD = 20 gave comparable results w.r.t SCD = -1 (using all alignment results,i.e. without any bounded coverage limit).
+ 
+###  Execution Time
+
+Following CPU and execution times are suggested-usage using LSC.0.2.2 and LSC 1.alpha on our clusters with six thread. These figures will greatly differ based on your system configuration.
+
+
+100,000 PacBio long reads X 64 million 75bp Illumina short reads (Dataset)
+
+* LSC 1.alpha (w/ bowtie2, SCD=20): Time = 09:40:33, Max vmem = 8.532G
+* LSC.0.2.2(w/ novoalign): Time = 16:12:00, Max vmem = 27.506G
+ 
+ 
 
 
 
