@@ -191,7 +191,7 @@ For detailed information about this release, please see the release notes.
 	* Updated RazerS3 command options to be compatible with latest version (razers3 3.1.1)
 * Added extra clean_up option value to remove all generated intermiediate files in case of issues w/ disk space
 
-Bug Fixes:
+*Bug Fixes:*
 
 * Fix a bug in generating full_LR.fa sequences causing some full read sequences to miss couple of bases
 
