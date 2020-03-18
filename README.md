@@ -709,8 +709,9 @@ You can change these settings through .cfg file. Please refer to their manuals f
 * Note: novoalign has limitation on read length. If you are using LSC with novoalign, please make sure your short reads length do not exceed maximum threashold. Following figures compare LSC correction results configured with different supported aligners. Identity metric is defined as number-of-matchs/error-corrected-read-length after aligning reads to reference genome using Blat.
 
 
-![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_bases.png)
-![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_bases.png)
+![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_bases.png) ![alt text](https://github.com/RuRuYa/LSC/blob/master/number_of_mappable_reads.png)
+
+
 
 
 
