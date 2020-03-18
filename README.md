@@ -301,7 +301,39 @@ LSC 0.2 takes a long read data sets (>=100bp) and a short reads data sets (50 - 
 
 # Tutorial
 
+
 This tutorial will help you get started with LSC by demonstrating how to error correct 57,244 PacBio long reads with 1 million short reads of length 101bp. If you are interested in parallelizing your run, please pay close attention to step 3, where we show an alternate step 3 where you can see how to set up the parallelized execution. If you experience any problems following these steps, please don't hesitate to contact kinfai.au@osumc.edu.
 
+* **step 0: Requirements**
+LSC aims to fully integrate into a variety of analysis pipelines. If any of the following requirements conflict with your lab's set up, please contact us.
+ 
+System Requirements: 
+
+* Linux operating system
+* Python 2.7
+* 16GB RAM recommended (8GB minimum for 5G bp short reads)
+* Free hard drive space exceeding 3x The uncompressed size of your short read data
+ 
+Read Format:
+
+* Single-end short reads or multiple files for paired-end short reads supported
+* Length of short reads should be greater or equal to 50bp
+* There is no requirement that reads must be the same length.
+* Input to LSC are sequencer reads in FASTA or FASTQ format.
+
+Software:
+
+* Short read mapper: Bowtie2 
+
+If you require support of another short read mapper please contact us.
+
+
+
 * **step 1: Download lastest version of LSC**
+
+Extract the source in the location of your choice. After extracting the location of the executable for LSC is:
+
+```LSC-2.0/bin/runLSC.py```
+
+You are welcome to add the bin directory to your path if you want to have runLSC.py command installed, but it is not necessary. If you desire a different python other than one located in /usr/bin/python you can execute LSC through your preferred python. Running the command with the -h option will give detailed descriptions of parameters. Be sure to have the bowtie2 aligner installed, as per the requirements.
 
