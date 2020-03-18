@@ -156,3 +156,12 @@ LSC 0.2 takes a long read data sets (>=100bp) and a short reads data sets (50 - 
 * Multi-threading is available
 * Reduced redundant temp files
 For detailed information about this release, please see the release notes.
+
+# Release notes
+
+**LSC 0.2 - Release Notes**
+LSC 0.2 takes a long read data sets (>=100bp) and a short reads data sets (50 - 100bp) as input. They should be in FASTA format. Running time is almost linear with the the number of threads.
+
+* More optional for raw data prefilter
+* Multi-threading is avaiable
+* Reduced redundant temp files
