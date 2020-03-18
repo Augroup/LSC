@@ -160,16 +160,21 @@ For detailed information about this release, please see the release notes.
 # Release notes
 
 **LSC 0.2.4 - Release Notes**
+
 1. Besides the default aligner Novoalign, BWA can be also used as the initial aligner from this version. Please find the new aligner options in the webpage ".cfg file format"
+
 2. Some uncertain corrections may exsit at the right ends of the long reads in the old LSC. LSC 0.2.4 settles this problem and likely improves the accuracy further.
 
 **LSC 0.2.3 - Release Notes**
+
 If you run LSC at the bin folder (the bin folder is the work directory) or set the bin as the default path, then you may meet a bug. LSC 0.2.3 fixes this bug of finding the correct bin folder. 
 
 **LSC 0.2.2 - Release Notes**
+
 LSC 0.2.2 fixes the bug of the option "I_RemoveBothTails". LSC 0.2.1 ran this option even if you set "N". It may halt the process in LSC 0.2.1 because the read name does not allow "RemoveBothTails". Now you can choose to use this option or not.
 
 **LSC 0.2.1 - Release Notes**
+
 LSC 0.2.1 fixes the bug of python path. Another bug of removing redundant reads is also fixed. LSC takes a long read data sets (>=100bp) and a short reads data sets (50 - 100bp) as input. They should be in FASTA format. Running time is almost linear with the the number of threads.
 
 * Python (version 2.6 or higher) should be installed in the default user bin ```"#!/usr/bin/python"```
@@ -177,6 +182,7 @@ LSC 0.2.1 fixes the bug of python path. Another bug of removing redundant reads 
 * A new option of using nonredandunt reads that save ~40% running time
 
 **LSC 0.2 - Release Notes**
+
 LSC 0.2 takes a long read data sets (>=100bp) and a short reads data sets (50 - 100bp) as input. They should be in FASTA format. Running time is almost linear with the the number of threads.
 
 * More optional for raw data prefilter
