@@ -551,4 +551,117 @@ Producing outputs from 115 batches
 There is also another user guide and download links for LSC: https://github.com/jason-weirather/LSC/.
  
     
+# Manual
+
+### Installation
+
+No explicit installation is required for LSC. You may save the LSC code to any location, and you are welcome to add the bin/ directory to your path if you want.
+
+You need to Python 2.7 installed in your computer which should be included by default with most linux distributions. Please see LSC requirements for more details.
+
+### Using LSC
+
+Firstly, see the tutorial on how to use LSC on some example data.
+
+In order to use LSC on your own data, you will need to decide if doing a full run or a parallelized run would be more efficient. If you are running a large data set (Tens of millions of short reads, and hundreds of thousands of long reads or bigger), we highly recommend doing a parallelized run. A step by step guide for both normal and parallized execution can be found in the tutorial. Too access the help regarding the command line options, you can used -h option with runLSC.py.
+
+
+### Executing runLSC.py
+
+"runLSC.py" is the main program in the LSC package. Output is written to the "--output" folder. Details of the output files are described in file formats. Its options are described here and can be accssed using the -h option when running runLSC.py:
+
+```$ LSC-2.0/bin/runLSC.py -h```
+
+The required options differ depending on run mode, but the most basic way to run LSC is to do an end to end run that does not save temporary files.
+    ```$ LSC-2.0/bin/runLSC.py --long_reads myLR.fa --short_reads mySR.fa --output myoutputdir```
+    
+You may also execute LSC step-by-step. To do this we must specify a temporary directory that will not be deleted using --specific_tempdir.
+```
+    $ LSC-2.0/bin/runLSC.py --mode 1 --long_reads myLR.fa --short_reads mySR.fa 
+    --specifc_tempdir mytempdir
+    
+    $ LSC-2.0/bin/runLSC.py --mode 2 --specifc_tempdir mytempdir
+    
+    $ LSC-2.0/bin/runLSC.py --mode 3 --specifc_tempdir mytempdir --output myoutdir
+ 
+```
+mode 0 (default): end-to-end LSC run.
+
+mode 1: Homopolymer compresses long and short reads.
+
+mode 2: runs the alignment and LSC correction steps.
+
+mode 3: Combine all corrected reads to for final outputs.
+
+
+Alternatively a parallelized work flow can be done by replacing the --mode 2 paramater with --parallelized_mode_2 X, where X is the batch number. You can execute the command for each batch. If you need to find the number of batches, after running --mode 1, you can look in mytempdir/batch_count. You will need to execute 1 to and including batch_count.
+
+```
+$ LSC-2.0/bin/runLSC.py --mode 1 --long_reads myLR.fa --short_reads mySR.fa 
+    --specifc_tempdir mytempdir
+```
+
+Now the compressed long and short reads are ready for analysis.
+
+ ```$ cat mytempdir/batch_count```
+ 
+This will tell you how many X batches to run. Now for 1 to X:
+
+``` $ LSC-2.0/bin/runLSC.py --parallized_mode_2 X --specifc_tempdir mytempdir ```
+
+Finally you can combine all the outputs back together.
+
+``` $ LSC-2.0/bin/runLSC.py --mode 3 --specifc_tempdir mytempdir --output myoutdir ```
+
+Please refer to the Tutorial for an example. 
+
+### Input files
+
+LSC accepts one long-read sequences file (to be corrected) and one or more short-read sequences file as input. The input files could be in standard fasta or fastq formats. Gzipped inputs are supported.
+
+Note: As part of LSC algorithm, it generates homopolyer-compressed short-read sequences before alignment. If you have already run LSC with the same SR dataeset you can skip this step by using previously generated homopolyer-compressed SR files. (You can find SR.fa.cps and SR.fa.idx in temp folderpath.) Please keep in mind if you are using the cps and idx SR files, you will need to specify both their locations as two parameters following --short_reads.
+
+### Output files
+
+There are four output files: corrected_LR.fa, corrected_LR.fq, full_LR.fa, uncorrected_LR.fa in output folder:
+
+* corrected_LR
+
+As long as there are short reads (SR) mapped to a long read, this long read can be corrected at the SR-covered regions. (Please see more details from the paper). The sequence from the left-most SR-covered base to the right-most SR-covered base is outputted in the file corrected_LR. The output readname format is
+  
+  <original readname>|<percentage of corrected output sequence covered by short reads>
+
+example:
+  
+  m111006_202713_42141_c100202382555500000315044810141104_s1_p0/16|0.81
+
+* full_LR
+
+Although the terminus sequences are uncorrected, they are concatenated with their corrected sequence (corrected_LR) to be a "full" sequence. Thus, this sequence covers the equivalent length as the raw read and is outputted in the file full_LR.fa
+
+* uncorrected_LR
+
+This is the negative control. uncorrected_LR.fa contains the left-most SR-covered base to the right-most SR-covered base (equivalent region in corrected_LR) but not error corrected. Thus, it is fragments of the raw reads.
+
+The quality (error rate) of corrected reads in corrected_LR.fq depends on its SR coverage and it uses Sanger standard encoding. 
+
+|SRs Coverage	|Error Probability*|
+|--------------:|:----------------:|
+|0		|0.275	           |
+|1		|0.086             |
+|2		|0.063             |
+|3		|0.051             |
+|4	        |0.041             |
+|5	        |0.034             |
+|6	        |0.028             |
+|7	        |0.023             |
+|8	        |0.018             |
+|9	        |0.014             |
+|10	        |0.011             |
+|11	        |0.008             |
+|12	        |0.005             |
+|13	        |0.002             |
+|>= 14	        |~0.000            |
+
+
 
