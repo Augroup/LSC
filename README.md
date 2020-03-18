@@ -303,5 +303,5 @@ LSC 0.2 takes a long read data sets (>=100bp) and a short reads data sets (50 - 
 
 This tutorial will help you get started with LSC by demonstrating how to error correct 57,244 PacBio long reads with 1 million short reads of length 101bp. If you are interested in parallelizing your run, please pay close attention to step 3, where we show an alternate step 3 where you can see how to set up the parallelized execution. If you experience any problems following these steps, please don't hesitate to contact kinfai.au@osumc.edu.
 
-** step 1: Download lastest version of LSC**
+* **step 1: Download lastest version of LSC**
 
