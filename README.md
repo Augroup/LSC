@@ -304,7 +304,7 @@ LSC 0.2 takes a long read data sets (>=100bp) and a short reads data sets (50 - 
 
 This tutorial will help you get started with LSC by demonstrating how to error correct 57,244 PacBio long reads with 1 million short reads of length 101bp. If you are interested in parallelizing your run, please pay close attention to step 3, where we show an alternate step 3 where you can see how to set up the parallelized execution. If you experience any problems following these steps, please don't hesitate to contact kinfai.au@osumc.edu.
 
-* **step 0: Requirements**
+### step 0: Requirements
 LSC aims to fully integrate into a variety of analysis pipelines. If any of the following requirements conflict with your lab's set up, please contact us.
  
 System Requirements: 
@@ -329,11 +329,225 @@ If you require support of another short read mapper please contact us.
 
 
 
-* **step 1: Download lastest version of LSC**
+### Step 1 - Download lastest version of LSC
 
 Extract the source in the location of your choice. After extracting the location of the executable for LSC is:
 
 ```LSC-2.0/bin/runLSC.py```
 
 You are welcome to add the bin directory to your path if you want to have runLSC.py command installed, but it is not necessary. If you desire a different python other than one located in /usr/bin/python you can execute LSC through your preferred python. Running the command with the -h option will give detailed descriptions of parameters. Be sure to have the bowtie2 aligner installed, as per the requirements.
+
+```$ LSC-2.0/bin/runLSC.py -h```
+
+or
+ 
+```$ python LSC-2.0/bin/runLSC.py -h```
+
+
+```
+usage: runLSC.py [-h] [--long_reads LONG_READS]
+                 [--short_reads [SHORT_READS [SHORT_READS ...]]]
+                 [--short_read_file_type {fa,fq,cps}] [--threads THREADS]
+                 [--tempdir TEMPDIR | --specific_tempdir SPECIFIC_TEMPDIR]
+                 [-o OUTPUT]
+                 [--mode {0,1,2,3} | --parallelized_mode_2 PARALLELIZED_MODE_2]
+                 [--aligner {hisat,bowtie2}] [--sort_mem_max SORT_MEM_MAX]
+                 [--minNumberofNonN MINNUMBEROFNONN] [--maxN MAXN]
+                 [--error_rate_threshold ERROR_RATE_THRESHOLD]
+                 [--short_read_coverage_threshold SHORT_READ_COVERAGE_THRESHOLD]
+                 [--long_read_batch_size LONG_READ_BATCH_SIZE]
+                 [--samtools_path SAMTOOLS_PATH]
+ 
+LSC 2.0: Correct errors (e.g. homopolymer errors) in long reads, using short
+read data
+ 
+optional arguments:
+  -h, --help            show this help message and exit
+  --long_reads LONG_READS
+                        FASTAFILE Long reads to correct. Required in mode 0 or
+                        1. (default: None)
+  --short_reads [SHORT_READS [SHORT_READS ...]]
+                        FASTA/FASTQ FILE Short reads used to correct the long
+                        reads. Can be multiple files. If choice is cps reads,
+                        then there must be 2 files, the cps and the idx file
+                        following --short reads. Required in mode 0 or 1.
+                        (default: None)
+  --short_read_file_type {fa,fq,cps}
+                        Short read file type (default: fa)
+  --threads THREADS     Number of threads (Default = cpu_count) (default: 0)
+  --tempdir TEMPDIR     FOLDERNAME where temporary files can be placed
+                        (default: /tmp)
+  --specific_tempdir SPECIFIC_TEMPDIR
+                        FOLDERNAME of exactly where to place temproary
+                        folders. Required in mode 1, 2 or 3. Recommended for
+                        any run where you may want to look back at
+                        intermediate files. (default: None)
+  -o OUTPUT, --output OUTPUT
+                        FOLDERNAME where output is to be written. Required in
+                        mode 0 or 3. (default: None)
+  --mode {0,1,2,3}      0: run through, 1: Prepare homopolymer compressed long
+                        and short reads. 2: Execute correction on batches of
+                        long reads. Can be superseded by --parallelized_mode_2
+                        where you will only execute a single batch. 3: Combine
+                        corrected batches into a final output folder.
+                        (default: 0)
+  --parallelized_mode_2 PARALLELIZED_MODE_2
+                        Mode 2, but you specify a sigle batch to execute.
+                        (default: None)
+  --aligner {hisat,bowtie2}
+                        Aligner choice. hisat parameters have not been
+                        optimized, so we recommend bowtie2. (default: bowtie2)
+  --sort_mem_max SORT_MEM_MAX
+                        -S option for memory in unix sort (default: None)
+  --minNumberofNonN MINNUMBEROFNONN
+                        Minimum number of non-N characters in the compressed
+                        read (default: 40)
+  --maxN MAXN           Maximum number of Ns in the compressed read (default:
+                        None)
+  --error_rate_threshold ERROR_RATE_THRESHOLD
+                        Maximum percent of errors in a read to use the
+                        alignment (default: 12)
+  --short_read_coverage_threshold SHORT_READ_COVERAGE_THRESHOLD
+                        Minimum short read coverage to do correction (default:
+                        20)
+  --long_read_batch_size LONG_READ_BATCH_SIZE
+                        INT number of long reads to work on at a time. This is
+                        a key parameter to adjusting performance. A smaller
+                        batch size keeps the sizes and runtimes of
+                        intermediate steps tractable on large datasets, but
+                        can slow down execution on small datasets. The default
+                        value should be suitable for large datasets. (default:
+                        500)
+  --samtools_path SAMTOOLS_PATH
+                        Path to samtools by default assumes its installed. If
+                        not specified, the included version will be used.
+                        (default: samtools)
+
+
+```
+
+### Step 2 - Download and extract the example files
+
+Download example at:
+
+https://github.com/jason-weirather/LSC/tree/master/example
+
+Extract the example to an empty folder of your choice. After extracting the folder should contain the following files:
+
+```$ ls example-LSC-2.0/
+LR.fa   SR.fa 
+```
+
+LR.fa contains the long reads in FASTA format. SR.fa contains the short reads in FASTA format.
+
+
+### Step 3 - Prepare and execute the LSC command
+
+First lets prepare and execute a simple LSC command.
+
+```
+$ LSC-2.0/bin/runLSC.py --long_reads example-LSC-2.0/LR.fa --short_reads example-LSC-2.0/SR.fa 
+      --specific_tempdir tutorial_temp --output tutorial_output
+```
+
+```
+ 
+=== Welcome to LSC 2.0 ===
+===rename LR:===
+0:00:05.107854
+=== sort and uniq SR data ===
+0:00:40.875131
+===compress SR:===
+0:02:01.445827
+===batch count:===
+Work will begin on 115 batches.
+0:02:01.464558
+0:02:01.464596
+===compress LR, samParser LR.??.cps.nav:===
+... executing batch 115.2 (index)        
+0:03:00.675972
+... step 3 aligning 115/115   
+===compress LR, samParser LR.??.cps.nav:===
+... executing batch 115.7 (correcting)   
+0:55:20.210951
+===produce outputs:===
+Producing outputs from 115 batches
+0:55:26.891062
+```
+
+### Step 3 (alternative) - Parallelize execution of the LSC command
+
+We will have to execute one stage at a time for parallel execution. First is --mode 1 where homopolymer compressed long and short reads are created. --specific_temp dir is required for this step-wise mode of execution.
+
+```
+$ LSC-2.0/bin/runLSC.py --mode 1 --long_reads example-LSC-2.0/LR.fa --short_reads example-LSC-2.0/SR.fa 
+      --specific_tempdir tutorial_temp
+``` 
+
+```
+=== Welcome to LSC 2.0 ===
+===rename LR:===
+0:00:05.240716
+=== sort and uniq SR data ===
+0:00:39.545451
+===compress SR:===
+0:01:56.110217
+===batch count:===
+Work will begin on 115 batches.
+0:01:56.157878
+0:01:56.157921
+```
+
+Next we need to find out how many parallel jobs we have to run.
+
+```
+$ cat tutorial_temp/batch_count
+``` 
+```    
+115
+``` 
+    
+We need to execute 115 jobs.  These are numbered 1-115 and can be run individually by setting
+```--parallelized_mode_2 X```, where X is your job number.  You must use the same ```--specific_tempdir``` you used in ```--mode 1```. You can execute these commands in parallel.
+    
+ 
+```    
+$ LSC-2.0/bin/runLSC.py --parallelized_mode_2 1 
+      --specific_tempdir tutorial_temp
+```
+ 
+    
+```
+=== Welcome to LSC 2.0 ===
+===Parallelized mode:===
+Will begin work on batch #1
+0:00:00.001246
+===compress LR, samParser LR.??.cps.nav:===
+... executing batch 1.2 (index)        
+0:00:04.281204
+... step 3 aligning 1/115   
+===compress LR, samParser LR.??.cps.nav:===
+... executing batch 1.7 (correcting)   
+0:01:21.556175
+```
+    
+After execute of that command for ```--parallelized_mode_2 1 ```through ```--parallelized_mode_2 115```. Then we can use ```--mode 3 ```to put all the batches back together. In step-wise execution, output is required to be specified for ```mode 3.  --specific_tempdir ``` needs to be the same directory specified in mode 1 and mode 2.
+    
+```
+$ LSC-2.0/bin/runLSC.py --mode 3 
+      --specific_tempdir tutorial_temp --output tutorial_output
+```
+ 
+    
+``` 
+=== Welcome to LSC 2.0 ===
+0:00:00.004400
+===produce outputs:===
+Producing outputs from 115 batches
+0:00:07.298073
+```   
+ 
+    
+ 
+    
 
