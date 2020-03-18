@@ -304,7 +304,7 @@ LSC 0.2 takes a long read data sets (>=100bp) and a short reads data sets (50 - 
 
 This tutorial will help you get started with LSC by demonstrating how to error correct 57,244 PacBio long reads with 1 million short reads of length 101bp. If you are interested in parallelizing your run, please pay close attention to step 3, where we show an alternate step 3 where you can see how to set up the parallelized execution. If you experience any problems following these steps, please don't hesitate to contact kinfai.au@osumc.edu.
 
-### step 0: Requirements
+### Step 0 - Requirements
 LSC aims to fully integrate into a variety of analysis pipelines. If any of the following requirements conflict with your lab's set up, please contact us.
  
 System Requirements: 
@@ -531,7 +531,7 @@ Will begin work on batch #1
 0:01:21.556175
 ```
     
-After execute of that command for ```--parallelized_mode_2 1 ```through ```--parallelized_mode_2 115```. Then we can use ```--mode 3 ```to put all the batches back together. In step-wise execution, output is required to be specified for ```mode 3.  --specific_tempdir ``` needs to be the same directory specified in mode 1 and mode 2.
+After execute of that command for ```--parallelized_mode_2 1 ```through ```--parallelized_mode_2 115```. Then we can use ```--mode 3 ```to put all the batches back together. In step-wise execution, output is required to be specified for ```mode 3```.  ```--specific_tempdir ``` needs to be the same directory specified in mode 1 and mode 2.
     
 ```
 $ LSC-2.0/bin/runLSC.py --mode 3 
@@ -548,6 +548,7 @@ Producing outputs from 115 batches
 ```   
  
     
+There is also another user guide and download links for LSC: https://github.com/jason-weirather/LSC/.
  
     
 
