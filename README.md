@@ -663,5 +663,56 @@ The quality (error rate) of corrected reads in corrected_LR.fq depends on its SR
 |13	        |0.002             |
 |>= 14	        |~0.000            |
 
+Reference: LSC paper 
+
+* Error probablity is modeled with logarithmic funtion fitted to real data error-probabilities computed in the paper.
+
+Note: Part of corrected_LR sequence without any short read coverage would have the default 27.5% error rate. If input LRs are in fastq format, the original quality values are not used here. 
+
+###  Module: filter_corrected_reads.py
+
+In addition to quality information in corrected_LR.fq file, you can also select corrected LR sequences with higher percentage of SR covered length using filter_corrected_reads.py script in the bin folder.
+
+```LSC_bin_path/utilities/filter_corrected_reads.py <SR_covered_length_threshold> <corrected_LR.fa or fq file> > <output_file> ```
+
+exapmle:   
+
+```python bin/filter_corrected_reads.py 0.5 output/corrected_LR.fa > output/corrected_LR.filtered.fa```
+
+You can also select "best" reads for your downstream analysis by mapping corrected LRs to the reference genome or annotation (for RNA-seq analysis). Then, filter the reads by mapping score or percentage of base match (e.g. "identity" in BLAT)
+
+
+### Short read-Long read Aligner
+
+LSC uses a short read aligner in the first step. By default, Bowtie2 is used. You can have BWA, , Novoalign or RazerS (v3) to run this step as well.
+
+Default aligners setting are:
+
+Bowtie2 : 
+
+```-a -f -L 15 --mp 1,1 --np 1 --rdg 0,1 --rfg 0,1 --score-min L,0,-0.08 --end-to-end --no-unal```
+
+BWA : 
+
+```-n 0.08 -o 10 -e 3 -d 0 -i 0 -M 1 -O 0 -E 1 -N```
+
+Novoalign* : 
+
+```-r All -F FA -n 300 -o sam```
+
+RazerS3 : 
+
+```-i 92 -mr 0 -of sam```
+
+You can change these settings through .cfg file. Please refer to their manuals for more details. 
+
+* Note: novoalign has limitation on read length. If you are using LSC with novoalign, please make sure your short reads length do not exceed maximum threashold. Following figures compare LSC correction results configured with different supported aligners. Identity metric is defined as number-of-matchs/error-corrected-read-length after aligning reads to reference genome using Blat.
+
+http://augroup.org/LSC/images/number_of_mappable_bases.png
+
+
+
+
+
 
 
