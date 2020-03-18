@@ -159,6 +159,8 @@ For detailed information about this release, please see the release notes.
 
 # Release notes
 
+
+
 **LSC 0.2.4 - Release Notes**
 
 1. Besides the default aligner Novoalign, BWA can be also used as the initial aligner from this version. Please find the new aligner options in the webpage ".cfg file format"
